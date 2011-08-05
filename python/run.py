@@ -20,13 +20,13 @@ ytest = csv.writer(open('../data/ytest.csv','w'))
 
 print datetime.now(), 'converting to vectors and storing to csv'
 for f in [f[setup.__text__][0] for f in s['train'] if len(f[setup.__text__][0]) > 0]:
-    train.writerow(f)
+    train.writerow(counter.vector(f))
 for f in [f[setup.__subject__][0] for f in s['train'] if len(f[setup.__text__][0]) > 0]:
-    ytrain.writerow(f)
+    ytrain.writerow(mapper.vector(f))
 
 for f in [f[setup.__text__][0] for f in s['test'] if len(f[setup.__text__][0]) > 0]:
-    test.writerow(f)
+    test.writerow(counter.vector(f))
 for f in [f[setup.__subject__][0] for f in s['test'] if len(f[setup.__text__][0]) > 0]:
-    ytest.writerow(f)
+    ytest.writerow(mapper.vector(f))
 
 print datetime.now(), 'finished'
