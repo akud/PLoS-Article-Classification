@@ -10,8 +10,10 @@ print datetime.now(), 'finished gathering sample articles'
 csv.writer(open('../data/test_ids.csv','w')).writerow([f['id'] for f in s['test']])
 csv.writer(open('../data/train_ids.csv','w')).writerow([f['id'] for f in s['train']])
 
-counter = words.counter([f[setup.__text__][0] for f in s['train'] if len(f[setup.__text__][0]) > 0],normalize=False,appendWordCount=True)
-mapper = words.mapper([f[setup.__subject__][0] for f in s['train'] if len(f[setup.__subject__][0]) > 0])
+counter = words.counter([f[setup.__text__][0] for f in s['train'] if len(f[setup.__text__][0]) > 0],
+    normalize=False,appendWordCount=True,dictionaryFile='../data/dictionary.csv')
+mapper = words.mapper([f[setup.__subject__][0] for f in s['train'] if len(f[setup.__subject__][0]) > 0],
+    categoryFile='../data/category.csv')
 
 train = csv.writer(open('../data/train.csv','w'))
 test = csv.writer(open('../data/test.csv','w')) 

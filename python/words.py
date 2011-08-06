@@ -7,7 +7,7 @@ class counter:
         a whole set of training documents from which to build a global dictionary.
     '''
 
-    def __init__(self,texts,normalize=True,appendWordCount=False,storeDictionary=False):
+    def __init__(self,texts,normalize=True,appendWordCount=False,dictionaryFile=None):
         '''
         texts - training set of texts from which to build a global dictionary
         normalize - whether vectors produced by this object should have their entries divided by the total number of words
@@ -30,8 +30,8 @@ class counter:
         self.dic = sorted(list(set(words)))
         self.dic.remove('')
         print 'created dictionary of %s stemmed words' % (len(self.dic))
-        if storeDictionary:
-            csv.writer(open('dictionary.csv','w')).writerow(self.dic)
+        if dictionaryFile:
+            csv.writer(open(dictionaryFile,'w')).writerow(self.dic)
 
     def vector(self,text):
         '''
@@ -51,13 +51,13 @@ class mapper:
     '''
         Maps String categories to indicator vectors of 0s and 1s
     '''
-    def __init__(self,trainingSubjects,storeSubjects=False):
+    def __init__(self,trainingSubjects,categoryFile=None):
         distinct = set(trainingSubjects)
         self.count = len(distinct)
         self.sortedSubjs = sorted(list(distinct))
         print 'created mapping of %s distinct subjects' % (self.count)
-        if storeSubjects:
-            csv.writer(open('subjects.csv','w')).writerow(self.sortedSubjs)
+        if categroyFile:
+            csv.writer(open(categoryFile,'w')).writerow(self.sortedSubjs)
 
     def vector(self,subject):
         vector = [0 for i in range(0,self.count)]
@@ -67,6 +67,7 @@ class mapper:
         except ValueError:
             pass
         return vector
+
     def category(self,vector):
         try:
             return self.sortedSubjs[vector.index(1)]
