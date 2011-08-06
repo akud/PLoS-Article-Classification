@@ -51,13 +51,13 @@ class mapper:
     '''
         Maps String categories to indicator vectors of 0s and 1s
     '''
-    def __init__(self,trainingSubjects,categoryFile=None):
+    def __init__(self,trainingSubjects,subjectFile=None):
         distinct = set(trainingSubjects)
         self.count = len(distinct)
         self.sortedSubjs = sorted(list(distinct))
         print 'created mapping of %s distinct subjects' % (self.count)
         if categroyFile:
-            csv.writer(open(categoryFile,'w')).writerow(self.sortedSubjs)
+            csv.writer(open(subjectFile,'w')).writerow(self.sortedSubjs)
 
     def vector(self,subject):
         vector = [0 for i in range(0,self.count)]
