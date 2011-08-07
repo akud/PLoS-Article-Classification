@@ -54,8 +54,11 @@ class counter:
         counts = [ words.count(f) for f in self.dic]
         if self.normalize: 
             total = reduce(lambda x,y : x + y, counts)
-            counts = [ float(i) / total for i in counts ]
-        if self.appendWordCount: counts += [len(words)]
+            try:
+                counts = [ float(i) / total for i in counts ]
+            except ZeroDivisionError:
+                counts = [0 for i in counts ]
+        if self.appendWordCount: counts.append(len(words))
         return counts
 
     def clean(self,word):
