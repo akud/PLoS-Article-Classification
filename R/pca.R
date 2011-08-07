@@ -1,12 +1,12 @@
 pca.converter <- function(trainingData) {
-    print(paste(date(),'centering data...'),quote=FALSE)
+    common.log('centering data...')
     means <- apply(trainingData,2,mean)
     centered <- t(apply(trainingData,1,function(x) x - means))
-    print(paste(date(),'finished'),quote=FALSE)
+    common.log('finished')
     
-    print(paste(date(),'running svd decomposition...'),quote=FALSE)
+    common.log('running svd decomposition...')
     decomp <- svd(centered)
-    print(paste(date(),'finished'),quote=FALSE)
+    common.log('finished')
     u <- decomp$u
     v <- decomp$v
     dInverse <- solve(diag(decomp$d))

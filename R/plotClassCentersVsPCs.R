@@ -9,14 +9,14 @@ converter <- pca.converter(trainingData)
 graphColors <- colors()[sample(1:length(colors()),53)]
 centers <- matrix(0,nrow=numClasses,ncol=numDimensions) 
 
-print(paste(date(),'computing class centers...'),quote=FALSE)
+common.log('computing class centers...')
 for ( i in 1:numClasses ){
    centers[i,] <- common.classCenter(converter$orig,yTrain,i)
 }
-print(paste(date(),'finished'),quote=FALSE)
+common.log('finished')
 for (i in 1:(numPCs - 1)) {
     for ( j in (i + 1):numPCs ) {
-        print(paste(date(),'plotting class centers in PC dimensions',i,'and',j),quote=FALSE)
+        common.log(paste('plotting class centers in PC dimensions',i,'and',j))
         jpeg(paste(imgDir,'/pc_',i,'_vs_',j,'_center.jpg',sep=''))
         xlim <- c(min(centers[,i]),max(centers[,i]))
         ylim <- c(min(centers[,j]),max(centers[,j]))
