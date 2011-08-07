@@ -1,6 +1,7 @@
 source('common.R')
 
 cross.split <- function(trainingData,y,k){
+#split the training data in to k piecies
     nrows <- dim(trainingData)[1]
     rand  <- sample(1:nrows,nrows)
     numPer <- floor(nrows / k)
@@ -15,6 +16,9 @@ cross.split <- function(trainingData,y,k){
 }
 
 cross.complement <- function(split,i) {
+#Return the complement of ith portion of split training data
+#split - result of calling cross.split()
+#i - the component to exclude
     xcol <- dim(split[[1]]$x)[2]
     ycol <- dim(split[[1]]$y)[2]
     x <- matrix(ncol=xcol)
@@ -30,15 +34,20 @@ cross.complement <- function(split,i) {
     list(x=x,y=y)
 }
 
-cross.error <- function(trainingData,y,modelFunc,k){
+cross.error <- function(trainingData,y,k,modelFunc){
+#compute the expected test errror by cross-validation
+#This is the average of average number of misclassifications on each of the k components
+#trainingData - x values of training data
+#y - y values of training data
+#k - how many pieces to split the training data in to
+#modelFunc - function to build models.  must take arguments x and y, in that order
    split <- cross.split(trainingData,y,k)
    errors <- vector()
    for (i in 1:k){
        train <- cross.complement(split,i)
        model <- modelFunc(train$x,train$y)
        errors <- c(errors,
-           common.misclassifications(
-           model,split[[i]]$x,split[[i]]$y) / dim(split[[i]]$x)[1])
+           common.misclassifications(model,split[[i]]$x,split[[i]]$y) / (dim(split[[i]]$x)[1]))
    }
    mean(errors)
 }
