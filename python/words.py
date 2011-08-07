@@ -51,7 +51,9 @@ class counter:
         words = text.split()
         words = [self.clean(f) for f in words if f.lower() not in self.stopwords]
         counts = [ words.count(f) for f in self.dic]
-        if self.normalize: counts = [ float(i) / len(words) for i in counts ]
+        if self.normalize: 
+            total = reduce(lambda x,y : x + y, counts)
+            counts = [ float(i) / total for i in counts ]
         if self.appendWordCount: counts += [len(words)]
         return counts
 
