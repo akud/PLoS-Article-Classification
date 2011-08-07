@@ -1,2 +1,10 @@
-data <- as.matrix(read.csv('../data/train.csv',header=FALSE))
+source('basic_classifiers.R')
+source('common.R')
+source('cross_validation.R')
+source('forward_stepwise.R')
+source('pca.R')
+
+print('loading training data...',quote=FALSE)
+trainingData <- as.matrix(read.csv('../data/train.csv',header=FALSE))
 y <- as.matrix(read.csv('../data/ytrain.csv',header=FALSE))
+print('finished; stored word count vectors in variable trainingData, classes in variable y',quote=FALSE)

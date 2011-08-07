@@ -1,5 +1,3 @@
-source('common.R')
-
 cross.split <- function(trainingData,y,k){
 #split the training data in to k piecies
     nrows <- dim(trainingData)[1]
