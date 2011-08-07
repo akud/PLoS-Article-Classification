@@ -1,25 +1,32 @@
 source('setup.R')
 
+title <- 'Class Centers'
+numPCs <- 10
+imgDir <- 'pc_images'
+numClasses <- dim(yTrain)[2]
+numDimensions <- dim(trainingData)[2]
 converter <- pca.converter(trainingData)
 graphColors <- colors()[sample(1:length(colors()),53)]
-centers <- vector()
-for (i in 1:53){
-   centers <- c(centers,common.classCenter(converter$orig,y,i)) 
-   print(paste('computed center for class',i),quote=FALSE)
+centers <- matrix(0,nrow=numClasses,ncol=numDimensions) 
+
+print(paste(date(),'computing class centers...'),quote=FALSE)
+for ( i in 1:numClasses ){
+   centers[i,] <- common.classCenter(converter$orig,yTrain,i)
 }
-title <- 'Class Centers'
-for (i in 1:10) {
-    for (j in 1:10) {
-        if (i != j) {
-            jpeg(paste('pc_',i,'_vs_',j,'.jpg',sep=''))
-            plot(centers[1][i],centers[1][j],col=graphColors[1],
-                type='p',xlab=paste('PC',i),paste('PC',j),main=title)
-            for( f in 1:53) {
-                points(centers[f][i],centers[f][j],col=graphColors[f],
-                type='p',xlab=paste('PC',i),paste('PC',j),main=title)
-            }
-            dev.off()
+print(paste(date(),'finished'),quote=FALSE)
+for (i in 1:(numPCs - 1)) {
+    for ( j in (i + 1):numPCs ) {
+        print(paste(date(),'plotting class centers in PC dimensions',i,'and',j),quote=FALSE)
+        jpeg(paste(imgDir,'/pc_',i,'_vs_',j,'_center.jpg',sep=''))
+        xlim <- c(min(centers[,i]),max(centers[,i]))
+        ylim <- c(min(centers[,j]),max(centers[,j]))
+        plot(centers[1,i],centers[1,j],col=graphColors[1],
+            type='p',xlab=paste('PC',i),ylab=paste('PC',j),
+            main=title,xlim=xlim,ylim=ylim)
+        for( f in 1:numClasses ) {
+            points(centers[f,i],centers[f,j],col=graphColors[f])
         }
+        dev.off()
     }
 }
 
