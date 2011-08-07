@@ -26,12 +26,20 @@ common.classCenter <- function(X,Y,i) {
     apply(points,2,mean) 
 }
 
-common.matrix(x) {
+common.matrix <- function(x) {
 #utility function to convert to a single row matrix if
 # the argument isn't already a matrix
     if(class(x) != 'matrix')
         x <- matrix(x,nrow=1)
     x
+}
+
+common.tostring <- function(vec) {
+    str <- '['
+    for (x in vec)
+        str <- paste(str,x)
+    str <- paste(str,']')
+    str
 }
 
 common.predictor <- function(model) {

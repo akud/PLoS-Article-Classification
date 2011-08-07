@@ -23,7 +23,7 @@ forward.stepwiseModel <- function(Xtrain,Ytrain,k,modelFunc=basic.restrictedLin)
 #the model function given must take in arguments x,y,columns
 #and return a model on x and y, restricted to the given columns
 	columns <- vector()	
-	for ( i in 1:k ){
+	for ( i in 1:k ) {
 		columns <- forward.addNextColumn(Xtrain,Ytrain,columns,modelFunc)
 	}
 	modelFunc(Xtrain,Ytrain,columns)
