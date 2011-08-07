@@ -15,6 +15,8 @@ common.classPoints <- function(Y,i){
 
 common.classCenter <- function(X,Y,i) {
    points <- X[common.classPoints(Y,i),] 
+   if (class(points) != 'matrix')
+       points <- matrix(points,nrow=1)
    apply(points,2,mean) 
 }
 
