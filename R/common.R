@@ -17,14 +17,21 @@ common.classPoints <- function(X,Y,i){
 #Get a matrix of the points of the given class
     rows <- common.classRows(Y,i)
     points <- X[rows,] 
-    if (class(points) != 'matrix')
-        points <- matrix(points,nrow=1)
-    points
+    common.matrix(points)
 }
 
 common.classCenter <- function(X,Y,i) {
+#compute the class center (mean)
     points <- common.classPoints(X,Y,i)
     apply(points,2,mean) 
+}
+
+common.matrix(x) {
+#utility function to convert to a single row matrix if
+# the argument isn't already a matrix
+    if(class(x) != 'matrix')
+        x <- matrix(x,nrow=1)
+    x
 }
 
 common.predictor <- function(model) {
@@ -41,6 +48,12 @@ common.predictor <- function(model) {
                 break
             }
         }
-        predictor
+        if (predictor != NULL) 
+            predictor
+        else 
+           function(x) {
+               x <- common.matrix(x)               
+               predict(model,x)
+           }
     }
 }
