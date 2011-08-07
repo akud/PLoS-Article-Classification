@@ -13,8 +13,7 @@ pca.converter <- function(trainingData) {
 
     list(orig=u,
     convert=function(x){
-        if(class(x) != 'matrix')
-            x <- matrix(x,nrow=1)
+        x <- common.matrix(x)
         x <- t(apply(x,1,function(r) r - means))
         x%*%v%*%dInverse
     })
