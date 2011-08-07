@@ -32,7 +32,7 @@ cross.complement <- function(split,i) {
     list(x=x,y=y)
 }
 
-cross.error <- function(trainingData,y,k,modelFunc){
+cross.validation <- function(trainingData,y,k,modelFunc){
 #compute the expected test errror by cross-validation
 #This is the average of average number of misclassifications on each of the k components
 #trainingData - x values of training data
@@ -40,12 +40,11 @@ cross.error <- function(trainingData,y,k,modelFunc){
 #k - how many pieces to split the training data in to
 #modelFunc - function to build models.  must take arguments x and y, in that order
    split <- cross.split(trainingData,y,k)
-   errors <- vector()
+   errors <- 0
    for (i in 1:k){
        train <- cross.complement(split,i)
        model <- modelFunc(train$x,train$y)
-       errors <- c(errors,
-           common.misclassifications(model,split[[i]]$x,split[[i]]$y) / (dim(split[[i]]$x)[1]))
+       errors <- errors + common.misclassifications(model,split[[i]]$x,split[[i]]$y)
    }
-   mean(errors)
+   errors / (dim(trainingData)[1])
 }
