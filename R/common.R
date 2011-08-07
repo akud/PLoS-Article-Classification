@@ -7,17 +7,24 @@ common.misclassifications <- function(model,X,Y) {
     sum(apply(res,2,function(t) if(t[2] - ncol != t[1]) 1 else 0))
 }
 
-common.classPoints <- function(Y,i){
+common.classRows <- function(Y,i) {
 #Get a list of the rows of the given class
     classes <- apply(Y,1,function(x) which(x == 1))
     which(classes == i)
 }
 
+common.classPoints <- function(X,Y,i){
+#Get a matrix of the points of the given class
+    rows <- common.classRows(Y,i)
+    points <- X[rows,] 
+    if (class(points) != 'matrix')
+        points <- matrix(points,nrow=1)
+    points
+}
+
 common.classCenter <- function(X,Y,i) {
-   points <- X[common.classPoints(Y,i),] 
-   if (class(points) != 'matrix')
-       points <- matrix(points,nrow=1)
-   apply(points,2,mean) 
+    points <- common.classPoints(X,Y,i)
+    apply(points,2,mean) 
 }
 
 common.predictor <- function(model) {
