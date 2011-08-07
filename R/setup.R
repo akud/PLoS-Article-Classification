@@ -3,6 +3,7 @@ source('common.R')
 source('cross_validation.R')
 source('forward_stepwise.R')
 source('pca.R')
+source('lda.R')
 
 print(paste(date(),'loading training data...'),quote=FALSE)
 trainingData <- as.matrix(read.csv('../data/train.csv',header=FALSE))
