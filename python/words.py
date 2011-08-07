@@ -7,10 +7,11 @@ class counter:
         a whole set of training documents from which to build a global dictionary.
     '''
 
-    def __init__(self,texts,mindocs=2,normalize=True,appendWordCount=False,dictionaryFile=None):
+    def __init__(self,texts,mindocs=1,maxdocs=None,normalize=True,appendWordCount=False,dictionaryFile=None):
         '''
         texts - training set of texts from which to build a global dictionary
         mindocs - the minimum number of documents a (stemmed) word must appear in to be included in the dictionary
+        maxdocs - the maximum number of documents a (stemmed) word can appear in to be included in the dictionary
         normalize - whether vectors produced by this object should have their entries divided by the total number of words
         appendWordCount - whether to append the word count to the end of vectors (after normalization, if any)
         dictionaryFile - name of a file in which to store the dictionary, if any
@@ -34,15 +35,15 @@ class counter:
                     counts[word] = counts[word] + 1
                 else:
                     counts[word] = 1
-        
-        self.dic = sorted([word for word in counts.keys() if counts[word] >= mindocs and len(word) > 0])
+        if not maxdocs: maxdocs = len(texts) 
+        self.dic = sorted([word for word in counts.keys() if counts[word] >= mindocs and 
+            counts[word] <= maxdocs and len(word) > 0])
         print 'created dictionary of %s stemmed words, excluded %s words' % (len(self.dic),len(counts) - len(self.dic))
         if dictionaryFile:
             dictionaryFile = open(dictionaryFile,'w')
             dictionaryFile.writelines([f + '\n' for f in self.dic])
             dictionaryFile.flush()
             dictionaryFile.close()
-            print 'stored dictionary to ', dictionaryFile
 
     def vector(self,text):
         '''
