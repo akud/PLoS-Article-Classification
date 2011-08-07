@@ -7,13 +7,21 @@ s = setup.sample(10000,6000)
 
 print datetime.now(), 'finished gathering sample articles'
 
-csv.writer(open('../data/test_ids.csv','w')).writerow([f['id'] for f in s['test']])
-csv.writer(open('../data/train_ids.csv','w')).writerow([f['id'] for f in s['train']])
+train_ids = open('../data/train_ids.txt','w')
+train_ids.writelines([f['id'] + '\n' for f in s['train']])
+train_ids.flush()
+train_ids.close()
+
+test_ids = open('../data/test_ids.txt','w')
+test_ids.writelines([f['id'] + '\n' for f in s['test']])
+test_ids.flush()
+test_ids.close()
+
 
 counter = words.counter([f[setup.__text__][0] for f in s['train'] if len(f[setup.__text__][0]) > 0],
-    normalize=True,dictionaryFile='../data/dictionary.csv')
+    normalize=True,mindocs=50,dictionaryFile='../data/dictionary.txt')
 mapper = words.mapper([f[setup.__subject__][0] for f in s['train'] if len(f[setup.__subject__][0]) > 0],
-    categoryFile='../data/category.csv')
+    subjectFile='../data/subjects.txt')
 
 train = csv.writer(open('../data/train.csv','w'))
 test = csv.writer(open('../data/test.csv','w')) 
