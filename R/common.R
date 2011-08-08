@@ -34,7 +34,7 @@ common.matrix <- function(x) {
     x
 }
 
-log <- function(msg) {
+common.log <- function(msg) {
 #log a message to the console
     print(paste(date(),msg),quote=FALSE)
 }
