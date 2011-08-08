@@ -1,15 +1,14 @@
 source('setup.R')
 
-pc <- pca.converter(trainingData)
-
 x <- seq(20,1000,by=20)
 
 errors <- vector()
 
 for (i in x) {
     common.log('running LDA with',i,'PCs')
-    modelFunc <- function(X,Y) lda.pcModel(X,Y,i,pcConverter=pc)
-    errors <- c(errors,pc$orig,yTrain,10,modelFunc)
+    modelFunc <- function(X,Y) lda.pcModel(X,Y,i)
+    errors <- c(errors,cross.validation(pc$orig,yTrain,10,modelFunc))
+    rm(modelFunc)
 }
 
 common.log('got errors:',common.tostring(errors))
