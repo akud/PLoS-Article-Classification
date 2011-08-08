@@ -34,9 +34,9 @@ common.matrix <- function(x) {
     x
 }
 
-common.log <- function(msg) {
+common.log <- function(...) {
 #log a message to the console
-    print(paste(date(),msg),quote=FALSE)
+    print(paste(date(),...),quote=FALSE)
 }
 common.tostring <- function(vec) {
     str <- '['

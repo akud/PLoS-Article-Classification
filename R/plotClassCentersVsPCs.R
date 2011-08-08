@@ -16,7 +16,7 @@ for ( i in 1:numClasses ){
 common.log('finished')
 for (i in 1:(numPCs - 1)) {
     for ( j in (i + 1):numPCs ) {
-        common.log(paste('plotting class centers in PC dimensions',i,'and',j))
+        common.log('plotting class centers in PC dimensions',i,'and',j)
         jpeg(paste(imgDir,'/pc_',i,'_vs_',j,'_center.jpg',sep=''))
         xlim <- c(min(centers[,i]),max(centers[,i]))
         ylim <- c(min(centers[,j]),max(centers[,j]))

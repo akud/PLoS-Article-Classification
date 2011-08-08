@@ -13,7 +13,6 @@ common.log('removing 0-vectors...')
 zeroVectors <- which(apply(trainingData,1,function(x) length(which(x != 0)) == 0))
 trainingData <- trainingData[-1*zeroVectors,]
 yTrain <- yTrain[-1*zeroVectors,]
-
-
-
-common.log(paste('removed',length(zeroVectors),'vectors; stored word count vectors in trainingData, classes in yTrain'))
+common.log('removed',length(zeroVectors),'vectors') 
+rm(zeroVectors)
+common.log('finished; stored word count vectors in trainingData, subject indicator vectors in yTrain')
