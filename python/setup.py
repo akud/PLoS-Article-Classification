@@ -3,10 +3,8 @@ from urllib2 import quote
 import csv
 
 __incSize__ = 500
-subjectField = 'subject_level_1'
-textField = 'abstract'
 
-def sample(limit,trainingSetSize):
+def sample(limit,trainingSetSize,subjectField,textField):
     fields = 'id,%s,%s' % (textField, subjectField)
     sort = quote('publication_date asc') 
     documents = []
