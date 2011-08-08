@@ -69,13 +69,15 @@ class mapper:
     '''
         Maps String categories to indicator vectors of 0s and 1s
         trainingSubjects - list of subjects to create a mapping for
+        mindocs - the minimum number of documents in which a subject must occur to be included in the list.
+            When mapping subjects to vectors, subjects that aren't in the list will be mapped to all 0's
         subjectFile - name of a file in which to store the distinct subjects, in order, if any
     '''
-    def __init__(self,trainingSubjects,subjectFile=None):
-        distinct = set(trainingSubjects)
-        self.count = len(distinct)
-        self.sortedSubjs = sorted(distinct)
-        print 'created mapping of %s distinct subjects' % (self.count)
+    def __init__(self,trainingSubjects,mindocs=1,subjectFile=None):
+        subjCounts = {f : trainingSubjects.count(f) for f in set(trainingSubjects)}
+        self.sortedSubjs = sorted([sub for sub in distinct if subjCounts[sub] >= mindocs])
+        self.count = len(self.sortedSubjs)
+        print 'created mapping of %s subjects, excluded %s subjects' % (self.count,len([f for f in subjCounts.keys() if subjCounts[f] < mindocs]))
         if subjectFile:
             subjectFile = open(subjectFile,'w')
             subjectFile.writelines([f + '\n' for f in self.sortedSubjs])

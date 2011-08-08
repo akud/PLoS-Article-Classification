@@ -24,7 +24,7 @@ counter = words.counter([f[setup.textField][0] for f in s['train'] if len(f[setu
     normalize=True,mindocs=mindocs,maxdocs=maxdocs,
     dictionaryFile='../data/dictionary.txt')
 mapper = words.mapper([f[setup.subjectField][0] for f in s['train'] if len(f[setup.textField][0]) > 0],
-    subjectFile='../data/subjects.txt')
+    mindocs=mindocs,subjectFile='../data/subjects.txt')
 
 train = csv.writer(open('../data/train.csv','w'))
 test = csv.writer(open('../data/test.csv','w')) 
@@ -32,14 +32,14 @@ ytrain = csv.writer(open('../data/ytrain.csv','w'))
 ytest = csv.writer(open('../data/ytest.csv','w')) 
 
 print datetime.now(), 'converting to vectors and storing to csv'
-for f in [f[setup.textField][0] for f in s['train'] if len(f[setup.textField][0]) > 0]:
+for f in [f[setup.textField][0] for f in s['train'] if len(f[setup.textField][0]) > 0 and 1 in mapper.vector(f[setup.subjectField][0])]:
     train.writerow(counter.vector(f))
-for f in [f[setup.subjectField][0] for f in s['train'] if len(f[setup.textField][0]) > 0]:
+for f in [f[setup.subjectField][0] for f in s['train'] if len(f[setup.textField][0]) > 0 and 1 in mapper.vector(f[setup.subjectField][0])]:
     ytrain.writerow(mapper.vector(f))
 
-for f in [f[setup.textField][0] for f in s['test'] if len(f[setup.textField][0]) > 0]:
+for f in [f[setup.textField][0] for f in s['test'] if len(f[setup.textField][0]) > 0 and 1 in mapper.vector(f[setup.subjectField][0])]:
     test.writerow(counter.vector(f))
-for f in [f[setup.subjectField][0] for f in s['test'] if len(f[setup.textField][0]) > 0]:
+for f in [f[setup.subjectField][0] for f in s['test'] if len(f[setup.textField][0]) > 0 and 1 in mapper.vector(f[setup.subjectField][0])]:
     ytest.writerow(mapper.vector(f))
 
 print datetime.now(), 'finished'
