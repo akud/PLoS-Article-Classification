@@ -39,12 +39,14 @@ cross.validation <- function(trainingData,y,k,modelFunc){
 #y - y values of training data
 #k - how many pieces to split the training data in to
 #modelFunc - function to build models.  must take arguments x and y, in that order
+   common.log('computing',k,'fold cross validation error')
    split <- cross.split(trainingData,y,k)
    errors <- 0
    for (i in 1:k){
        train <- cross.complement(split,i)
        model <- modelFunc(train$x,train$y)
        errors <- errors + common.misclassifications(model,split[[i]]$x,split[[i]]$y)
+       rm(model,train)
    }
    errors / (dim(trainingData)[1])
 }
