@@ -75,7 +75,7 @@ class mapper:
     '''
     def __init__(self,trainingSubjects,mindocs=1,subjectFile=None):
         subjCounts = {f : trainingSubjects.count(f) for f in set(trainingSubjects)}
-        self.sortedSubjs = sorted([sub for sub in distinct if subjCounts[sub] >= mindocs])
+        self.sortedSubjs = sorted([sub for sub in subjCounts.keys() if subjCounts[sub] >= mindocs])
         self.count = len(self.sortedSubjs)
         print 'created mapping of %s subjects, excluded %s subjects' % (self.count,len([f for f in subjCounts.keys() if subjCounts[f] < mindocs]))
         if subjectFile:
