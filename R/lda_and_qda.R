@@ -44,6 +44,6 @@ qda.restricted <- function(trainingData,yTrain,columns) {
     lda.restricted(trainingData,yTrain,columns,'qda')
 }
 
-qda.pcModel <- function(trainingData,yTrain,k) {
-    lda.pcModel(trainingData,yTrain,k,'qda')
+qda.pcModel <- function(trainingData,yTrain,k,pcConverter=NULL) {
+    lda.pcModel(trainingData,yTrain,k,pcConverter,'qda')
 }
