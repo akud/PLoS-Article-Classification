@@ -2,7 +2,7 @@
 
 import setup, csv, words
 from datetime import datetime
-subjectField = 'subject2_level_1'
+subjectField = 'cross_published_journal_key'
 textField = 'abstract'
 
 s = setup.sample(15000,10000,subjectField,textField)
@@ -20,12 +20,12 @@ test_ids.flush()
 test_ids.close()
 
 mindocs = round(0.01*len(s['train']))
-maxdocs = round(0.95*len(s['train']))
+maxdocs = round(0.99*len(s['train']))
 
-counter = words.counter([f[textField] for f in s['train'] if len(f[textField]) > 0],
+counter = words.counter([f[textField] for f in s['train']],
     normalize=True,mindocs=mindocs,maxdocs=maxdocs,
     dictionaryFile='../data/dictionary.txt')
-mapper = words.mapper([f[subjectField][0] for f in s['train'] if len(f[textField]) > 0],
+mapper = words.mapper([f[subjectField][0] for f in s['train']],
     mindocs=mindocs,subjectFile='../data/subjects.txt')
 
 train = csv.writer(open('../data/train.csv','w'))
@@ -34,14 +34,14 @@ ytrain = csv.writer(open('../data/ytrain.csv','w'))
 ytest = csv.writer(open('../data/ytest.csv','w')) 
 
 print datetime.now(), 'converting to vectors and storing to csv'
-for f in [f[textField] for f in s['train'] if len(f[textField]) > 0 and 1 in mapper.vector(f[subjectField][0])]:
+for f in [f[textField] for f in s['train'] if 1 in mapper.vector(f[subjectField][0])]:
     train.writerow(counter.vector(f))
-for f in [f[subjectField][0] for f in s['train'] if len(f[textField]) > 0 and 1 in mapper.vector(f[subjectField][0])]:
+for f in [f[subjectField][0] for f in s['train'] if 1 in mapper.vector(f[subjectField][0])]:
     ytrain.writerow(mapper.vector(f))
 
-for f in [f[textField] for f in s['test'] if len(f[textField]) > 0 and 1 in mapper.vector(f[subjectField][0])]:
+for f in [f[textField] for f in s['test']]:
     test.writerow(counter.vector(f))
-for f in [f[subjectField][0] for f in s['test'] if len(f[textField]) > 0 and 1 in mapper.vector(f[subjectField][0])]:
+for f in [f[subjectField][0] for f in s['test']]:
     ytest.writerow(mapper.vector(f))
 
 print datetime.now(), 'finished'

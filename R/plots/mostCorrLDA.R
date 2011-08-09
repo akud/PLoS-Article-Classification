@@ -1,6 +1,6 @@
 source('setup.R')
 
-x <- 1:50
+x <- seq(20,1000,by=20)
 
 plainErrors <- vector()
 pcErrors <- vector()
@@ -8,10 +8,14 @@ pcErrors <- vector()
 for (i in x) {
     common.log('running LDA with',i,'most correlated PCs and columns')
     plain <- function(X,Y) lda.mostCorrelated(X,Y,i)
-    plainErrors <- c(errors,cross.validation(pc$orig,yTrain,10,plain))
+    error <- cross.validation(trainingData,yTrain,5,plain)
+    plainErrors <- c(plainErrors,error)
+    common.log('Error for most correlated columns:',error)
     rm(plain)
     pc <- function(X,Y) lda.pcMostCorrelated(X,Y,i)
-    pcErrors <- c(errors,cross.validation(pc$orig,yTrain,10,pc))
+    error <- cross.validation(trainingData,yTrain,5,pc)
+    pcErrors <- c(pcErrors,error)
+    common.log('Error for most correlated pcs:',error)
     rm(pc)
 }
 

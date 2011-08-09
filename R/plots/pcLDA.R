@@ -7,7 +7,7 @@ errors <- vector()
 for (i in x) {
     common.log('running LDA with',i,'PCs')
     modelFunc <- function(X,Y) lda.pcModel(X,Y,i)
-    errors <- c(errors,cross.validation(trainingData,yTrain,10,modelFunc))
+    errors <- c(errors,cross.validation(trainingData,yTrain,5,modelFunc))
     rm(modelFunc)
 }
 

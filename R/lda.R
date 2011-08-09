@@ -42,12 +42,14 @@ lda.mostCorrelated <- function(trainingData,yTrain,k){
 #fit an LDA model on the input columns which are most correlated to the output classes
 #k - the number of columns to use 
     columns <- basis.correlated(trainingData,yTrain)[1:k]
-    lda.restricted(trainingData,yTrain,columns)
+    list(columns=columns,
+        model=lda.restricted(trainingData,yTrain,columns))
 }
 lda.pcMostCorrelated <- function(trainingData,yTrain,k) {
 #fit an LDA model on the PCs which are most correlated to the response classes
 #k - the number of columns to use for each class
     converter <- pca.converter(trainingData)
     columns <- basis.correlated(converter$orig,yTrain)[1:k]
-    lda.pcRestricted(trainingData,yTrain,columns,pcConverter=converter)
+    list(pcs=columns,converter=converter,
+        model=lda.pcRestricted(trainingData,yTrain,columns,pcConverter=converter))
 }
