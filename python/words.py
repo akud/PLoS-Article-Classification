@@ -25,6 +25,8 @@ class counter:
 #build the global dictionary
         if isinstance(texts,str):
             texts = [ texts ]
+        elif isinstance(texts[0],list):
+            texts = [t[0] for t in texts]
         words = [ f.split() for f in texts ]
         words = [ [self.clean(f) for f in lst if f.lower() not in self.stopwords] for lst in words ]
 #count the number of times each word appears in documents
@@ -49,6 +51,8 @@ class counter:
         '''
         Build a vector of word counts from the global dictionary in the given text
         '''
+        if(isinstance(text,list)):
+            text = text[0]
         words = text.split()
         words = [self.clean(f) for f in words if f.lower() not in self.stopwords]
         counts = [ words.count(f) for f in self.dic]
@@ -75,7 +79,7 @@ class mapper:
     '''
     def __init__(self,trainingSubjects,mindocs=1,subjectFile=None):
         if isinstance(trainingSubjects[0],list):
-            trainingSubjects = [ ', '.join(sorted(f)).title() for f in trainingSubjects ]
+            trainingSubjects = [ ', '.join(f[0:2]).title() for f in trainingSubjects ]
         subjCounts = {f : trainingSubjects.count(f) for f in set(trainingSubjects)}
         self.sortedSubjs = sorted([sub for sub in subjCounts.keys() if subjCounts[sub] >= mindocs])
         self.count = len(self.sortedSubjs)
@@ -88,7 +92,7 @@ class mapper:
 
     def vector(self,subject):
         if isinstance(subject,list):
-            subject = ', '.join(sorted(subject)).title()
+            subject = ', '.join(subject[0:2]).title()
         vector = [0 for i in range(0,self.count)]
         try:
             index = self.sortedSubjs.index(subject) 
