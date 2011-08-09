@@ -6,7 +6,7 @@ plainErrors <- vector()
 pcErrors <- vector()
 
 for (i in x) {
-    common.log('running LDA with',i,'PCs')
+    common.log('running LDA with',i,'most correlated PCs and columns')
     plain <- function(X,Y) lda.mostCorrelated(X,Y,i)
     plainErrors <- c(errors,cross.validation(pc$orig,yTrain,10,plain))
     rm(plain)
