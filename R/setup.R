@@ -2,6 +2,7 @@ source('basic_classifiers.R')
 source('common.R')
 source('cross_validation.R')
 source('forward_stepwise.R')
+source('basis_conversion.R')
 source('pca.R')
 source('lda.R')
 

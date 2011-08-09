@@ -40,22 +40,14 @@ lda.pcModel <- function(trainingData,yTrain,k) {
 }
 lda.mostCorrelated <- function(trainingData,yTrain,k){
 #fit an LDA model on the input columns which are most correlated to the output classes
-#k - the number of columns to use for each class; i.e. for each class we will choose the k most 
-#    correlated columns to use in the model. Note that only unique columns will be selected, so 
-#    the model may be trained on less than dim(yTrain)[2]*k columns
-    common.log('computing',k,'most correlated columns for each class...')
-    columns <- apply( cor(trainingData,yTrain),2,function(x) order(x)[1:k] )
-    columns <- unique(c(columns)) 
-    common.log('finished, got',length(columns),'columns to use')
+#k - the number of columns to use 
+    columns <- basis.correlated(trainingData,yTrain)[1:k]
     lda.restricted(trainingData,yTrain,columns)
 }
 lda.pcMostCorrelated <- function(trainingData,yTrain,k) {
 #fit an LDA model on the PCs which are most correlated to the response classes
 #k - the number of columns to use for each class
     converter <- pca.converter(trainingData)
-    common.log('computing',k,'most correlated pcs for each class...')
-    columns <- apply( cor(converter$orig,yTrain),2,function(x) order(x)[1:k] )
-    columns <- unique(c(columns)) 
-    common.log('finished, got',length(columns),'pcs to use')
+    columns <- basis.correlated(converter$orig,yTrain)[1:k]
     lda.pcRestricted(trainingData,yTrain,columns,pcConverter=converter)
 }
