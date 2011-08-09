@@ -1,6 +1,6 @@
 common.misclassifications <- function(model,X,Y) {
 #compute the number of misclassifications of a model on given data
-	predictions <- model(X)	
+	predictions <- common.predictor(model)(X)	
     ncol <- dim(Y)[2]
 
     res <- apply(cbind(Y,predictions),1,function(t) which(t != 0)) #indexes of predicted classes, next to true classes
@@ -60,7 +60,7 @@ common.predictor <- function(model) {
                 break
             }
         }
-        if (predictor != NULL) 
+        if (!is.null(predictor)) 
             predictor
         else 
            function(x) {
