@@ -4,6 +4,7 @@ source('cross_validation.R')
 source('forward_stepwise.R')
 source('basis_conversion.R')
 source('pca.R')
+source('knn.R')
 source('lda.R')
 
 common.log('loading training data...')
