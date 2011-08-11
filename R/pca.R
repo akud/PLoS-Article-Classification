@@ -15,6 +15,6 @@ pca.converter <- function(trainingData) {
     convert=function(x){
         x <- common.matrix(x)
         x <- t(apply(x,1,function(r) r - means))
-        x%*%v%*%dInverse
+        common.matrix(x%*%v%*%dInverse)
     })
 }
