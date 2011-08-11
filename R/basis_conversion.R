@@ -11,8 +11,14 @@ basis.quadratic <- function(x) {
     #function to transform input into the quadratic space of input columns
     make_prods <- function(x) {
         prods <- vector()
-        for (i in 1:length(x)) for (j in i:length(x)) prods <- c(prods,x[i]*x[j])
+        for (i in 1:length(x)) {
+            for (j in i:length(x)) {
+                if (i != 1) {
+                    prods <- c(prods,x[i]*x[j])
+                }
+            }
+        }
         prods
     }
-    common.matrix(apply(common.matrix(x),1,function(t) make_prods(c(1,t))))
+   t(common.matrix(apply(common.matrix(x),1,function(t) make_prods(c(1,t)))))
 }
