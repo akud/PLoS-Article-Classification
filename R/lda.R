@@ -2,7 +2,7 @@ library('MASS')
 
 lda.model <- function(trainingData,yTrain) {
 #Fit a standard LDA model on all the columns in the given X matrix
-    classes <- apply(yTrain,1,function(x) which(x == 1))
+    classes <- factor(apply(yTrain,1,function(x) which(x == 1)))
     fit <- lda(data.frame(trainingData),classes)
     nclasses <- dim(yTrain)[2]
 
