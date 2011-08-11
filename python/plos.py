@@ -3,6 +3,7 @@ from urllib2 import urlopen, quote
 from datetime import datetime, timedelta
 
 searchUrl = 'http://api.plos.org/search?'
+api_key = open('api_key').read().replace('\n','')
 
 def search(query='*:*'):
 	'''
@@ -15,12 +16,12 @@ def search(query='*:*'):
 	'''
 
 	if isinstance(query,str): 
-		query = { 'q' : query }	
+		query = { 'q' : quote(query) }	
 	else:
 		if not query.has_key('q'): query['q'] = '*:*' #make sure we include a 'q' parameter
 	query['wt'] = 'json' #make sure the return type is json
 	query['fq'] = quote('doc_type:full AND !article_type_facet:"Issue Image"') #search only for articles
-	query['api_key'] = 'AVbCGmpqdXTRJ9F' 
+	query['api_key'] = api_key
 	
 	url = searchUrl;
 
