@@ -1,17 +1,19 @@
-import plos, re, csv
+import plos, string, csv
 from Stemmer import Stemmer
 from math import log
 
 __stopwords__ = [f.replace('\n','') for f in open('stopwords.txt').readlines()]
-__re__ = re.compile('[,0-9]')
 __stemmer__ = Stemmer('english')
 
 def clean(word):
-    word = __re__.sub('',word.lower())
-    return __stemmer__.stemWord(word)
+    return ''.join(filter(lambda x: x in string.printable and x not in string.punctuation, word.lower())) 
+
+
+def stem(word):
+    return __stemmer__.stemWord(clean(word))
 
 def accept(word):
-    word = __re__.sub('',word.lower())
+    word = clean(word) 
     return len(word) > 0 and word not in __stopwords__ 
 
 class counter:
@@ -42,7 +44,7 @@ class counter:
         elif isinstance(texts[0],list):
             texts = [t[0] for t in texts]
         words = [ f.split() for f in texts ]
-        words = [ [clean(f) for f in lst if accept(f)] for lst in words ]
+        words = [ [stem(f) for f in lst if accept(f)] for lst in words ]
         if not maxdocs: maxdocs = len(texts) 
         self.total_docs = len(texts)
     
@@ -65,6 +67,7 @@ class counter:
 
         if dictionaryFile:
             dictionaryFile = open(dictionaryFile,'w')
+            print [f + '\n' for f in self.words]
             dictionaryFile.writelines([f + '\n' for f in self.words])
             dictionaryFile.flush()
             dictionaryFile.close()
