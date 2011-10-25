@@ -31,16 +31,25 @@ def search(query='*:*'):
 	print
 	return json.load(urlopen(url),encoding='UTF-8')['response']['docs']
 
-def singleField(field,query={'q': '*:*'}):
+def singlefield(field,query={'q': '*:*'}):
+    '''
+    Query for a single field.  Additionaly query parameters can be specified in a dictionary for the second argument
+    '''
     query['fl'] = field
     return [f[field] for f in search(query) if f.has_key(field)]
 
 def byIds(dois,fields='title,abstract'):
+    '''
+    Get the specified fields for the specified dois
+    '''
     if(isinstance(dois,str)): dois = dois.split(',')
     query = quote(' OR ').join([ 'id:%s' % (f) for f in dois])
     return search({'q' : query, 'fl': fields})
 
 def ids(limit=10,offset=0):
-    return singleField('id',
+    '''
+    Get a list of dois from solr
+    '''
+    return singlefield('id',
         {'start' : offset, 'rows' : limit,
         'sort' : quote('publication_date desc')})
