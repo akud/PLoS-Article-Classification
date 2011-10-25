@@ -2,8 +2,8 @@
 
 import setup, csv, words
 from datetime import datetime
-subjectField = 'cross_published_journal_key'
-textField = 'abstract'
+subjectField = 'subject2'
+textField = 'title'
 
 s = setup.sample(15000,10000,subjectField,textField)
 
@@ -35,12 +35,12 @@ ytest = csv.writer(open('../data/ytest.csv','w'))
 
 print datetime.now(), 'converting to vectors and storing to csv'
 for f in [f[textField] for f in s['train'] if 1 in mapper.vector(f[subjectField][0])]:
-    train.writerow(counter.vector(f))
+    train.writerow(counter.tf_vector(f))
 for f in [f[subjectField][0] for f in s['train'] if 1 in mapper.vector(f[subjectField][0])]:
     ytrain.writerow(mapper.vector(f))
 
 for f in [f[textField] for f in s['test']]:
-    test.writerow(counter.vector(f))
+    test.writerow(counter.tf_vector(f))
 for f in [f[subjectField][0] for f in s['test']]:
     ytest.writerow(mapper.vector(f))
 
