@@ -31,11 +31,14 @@ def search(query='*:*'):
 	print
 	return json.load(urlopen(url),encoding='UTF-8')['response']['docs']
 
-def singlefield(field,query={'q': '*:*'}):
+def singlefield(field,numrows=10):
     '''
-    Query for a single field.  Additionaly query parameters can be specified in a dictionary for the second argument
+    Query for a single field. Can optionally specify the number of results to return
     '''
-    query['fl'] = field
+    query = {
+        'fl' : field,
+        'rows' : numrows
+    }
     return [f[field] for f in search(query) if f.has_key(field)]
 
 def byIds(dois,fields='title,abstract'):
