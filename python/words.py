@@ -1,20 +1,21 @@
-import plos, string, csv
+import plos, string, csv, re
 from Stemmer import Stemmer
 from math import log
 
 __stopwords__ = [f.replace('\n','') for f in open('stopwords.txt').readlines()]
 __stemmer__ = Stemmer('english')
+__re__ = re.compile('[0-9]')
 
 def clean(word):
-    return ''.join(filter(lambda x: x in string.printable and x not in string.punctuation, word.lower())) 
+    word = ''.join(filter(lambda x: x in string.printable and x not in string.punctuation, word.lower())) 
+    return __re__.sub('',word)
 
 
 def stem(word):
     return __stemmer__.stemWord(clean(word))
 
 def accept(word):
-    word = clean(word) 
-    return len(word) > 0 and word not in __stopwords__ 
+    return len(stem(word)) > 1 and clean(word) not in __stopwords__ 
 
 class counter:
     '''
