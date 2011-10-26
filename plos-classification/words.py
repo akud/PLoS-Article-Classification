@@ -1,8 +1,8 @@
-import plos, string, csv, re
+import solr, string, csv, re
 from Stemmer import Stemmer
 from math import log
 
-__stopwords__ = [f.replace('\n','') for f in open('stopwords.txt').readlines()]
+__stopwords__ = [f.replace('\n','') for f in open('../stopwords.txt').readlines()]
 __stemmer__ = Stemmer('english')
 __re__ = re.compile('[0-9]')
 

@@ -3,7 +3,7 @@ from urllib2 import urlopen, quote
 from datetime import datetime, timedelta
 
 searchUrl = 'http://api.plos.org/search?'
-api_key = open('api_key').read().replace('\n','')
+api_key = open('../api_key').read().replace('\n','')
 
 def search(query='*:*'):
 	'''

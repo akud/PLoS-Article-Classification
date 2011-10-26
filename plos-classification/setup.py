@@ -1,4 +1,4 @@
-import plos, words
+import solr, words
 from urllib2 import quote
 import csv
 
@@ -16,7 +16,7 @@ def sample(limit,trainingSetSize,*args):
     sort = quote('publication_date asc') 
     documents = []
     for f in range(0,limit,__incSize__):
-        documents += plos.search(
+        documents += solr.search(
             {'fl' : fields, 'sort' : sort,
             'rows' : __incSize__, 'start' : f})  
 
