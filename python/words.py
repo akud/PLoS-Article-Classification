@@ -67,7 +67,6 @@ class counter:
 
         if dictionaryFile:
             dictionaryFile = open(dictionaryFile,'w')
-            print [f + '\n' for f in self.words]
             dictionaryFile.writelines([f + '\n' for f in self.words])
             dictionaryFile.flush()
             dictionaryFile.close()
@@ -89,7 +88,10 @@ class counter:
         '''
         counts = self.count_vector(text)
         total = reduce(lambda x,y : x + y, counts)
-        return [ float(i) / total for i in counts ]
+        try:
+            return [ float(i) / total for i in counts ]
+        except ZeroDivisionError:
+            return counts #counts is all zeroes
 
     def tfidf_vector(self, text):
         '''
