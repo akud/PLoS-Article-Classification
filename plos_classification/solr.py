@@ -1,9 +1,9 @@
 import json
 from urllib2 import urlopen, quote
 from datetime import datetime, timedelta
+from plos_classification import api_key
 
 searchUrl = 'http://api.plos.org/search?'
-api_key = open('../api_key').read().replace('\n','')
 
 def search(query='*:*'):
 	'''
