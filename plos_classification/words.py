@@ -117,7 +117,7 @@ class mapper:
         if isinstance(trainingSubjects[0],list):
             trainingSubjects = [ ', '.join(f[0:2]).title() for f in trainingSubjects ]
         subjCounts = {f : trainingSubjects.count(f) for f in set(trainingSubjects)}
-        self.sortedSubjs = sorted([sub for sub in subjCounts.keys() if subjCounts[sub] >= mindocs])
+        self.sortedSubjs = sorted([sub.title() for sub in subjCounts.keys() if subjCounts[sub] >= mindocs])
         self.count = len(self.sortedSubjs)
         print 'created mapping of %s subjects, excluded %s subjects' % (self.count,len([f for f in subjCounts.keys() if subjCounts[f] < mindocs]))
         if subjectFile:
