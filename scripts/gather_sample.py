@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import setup, json
+import plos_classification.setup as setup, json
 from datetime import datetime
 
 print datetime.now(), 'gathering sample articles'
