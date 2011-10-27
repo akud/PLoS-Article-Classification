@@ -46,6 +46,9 @@ def byIds(dois,fields='title,abstract'):
     Get the specified fields for the specified dois
     '''
     if(isinstance(dois,str)): dois = dois.split(',')
+    if isinstance(fields,list): fields = ','.join(fields)
+    if 'id' not in fields: fields = 'id,' + fields
+
     query = quote(' OR ').join([ 'id:%s' % (f) for f in dois])
     return search({'q' : query, 'fl': fields})
 
@@ -53,6 +56,10 @@ def ids(limit=10,offset=0):
     '''
     Get a list of dois from solr
     '''
-    return singlefield('id',
-        {'start' : offset, 'rows' : limit,
-        'sort' : quote('publication_date desc')})
+    results = search({
+        'fl' : 'id',
+        'start' : offset,
+        'rows' : limit,
+        'sort' : quote('publication_date desc')
+        })
+    return [r['id'] for r in results]
