@@ -4,7 +4,7 @@ from math import log
 from settings import stop_words
 
 __stemmer__ = Stemmer('english')
-__re__ = re.compile('[0-9]')
+__re__ = re.compile('[0-9 \t\r\n]')
 
 def clean(word):
     word = ''.join(filter(lambda x: x in string.printable and x not in string.punctuation, word.lower())) 
@@ -15,7 +15,7 @@ def stem(word):
     return __stemmer__.stemWord(clean(word))
 
 def accept(word):
-    return len(stem(word)) > 1 and clean(word) not in __stopwords__ 
+    return len(stem(word)) > 1 and clean(word) not in stop_words 
 
 class counter:
     '''
@@ -40,9 +40,9 @@ class counter:
         self.words = []
         self.total_docs = 0
 
-        if isinstance(texts,str):
+        if isinstance(texts, str) or isinstance(texts, unicode):
             texts = [ texts ]
-        elif isinstance(texts[0],list):
+        elif isinstance(texts[0], list):
             texts = [t[0] for t in texts]
         words = [ f.split() for f in texts ]
         words = [ [stem(f) for f in lst if accept(f)] for lst in words ]
@@ -79,7 +79,7 @@ class counter:
         if(isinstance(text,list)):
             text = text[0]
         words = text.split()
-        words = [ clean(f) for f in words if accept(f) ]
+        words = [ stem(f) for f in words if accept(f) ]
         return [ words.count(f) for f in self.words ]
  
     def tf_vector(self, text):
