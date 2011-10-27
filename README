@@ -1,5 +1,7 @@
 This is the code for my final project in Stats 132 at UC Berkeley (Practical Machine Learning)
 
-The goal is to use machine learning algorithms to classify scientific articles in to subjects.
+The goal is to use machine learning algorithms to classify scientific articles in to subjects using data from the publicly available PLoS search API (http://api.plos.org).
 
-I'm using data from the publicly available PLoS search API (http://api.plos.org).
+The python code is used to pull down articles from PLoS and format them into vectors.  It is gradually being assembled in to a decent project structure, and eventually will include the classification algorithms.
+
+The R scripts are built to facilitate investigation and contain some (poorly implemented) machine learning algorithms.
