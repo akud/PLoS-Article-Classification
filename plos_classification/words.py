@@ -1,7 +1,7 @@
 import solr, string, csv, re
 from Stemmer import Stemmer
 from math import log
-from plos_classification import stop_words
+from settings import stop_words
 
 __stemmer__ = Stemmer('english')
 __re__ = re.compile('[0-9]')
