@@ -5,6 +5,7 @@ class TestLimit(TestCase):
 
     def runTest(self):
         sample = setup.sample(100,85,'id','abstract','title')
+        self.assertEqual(len(sample),2)
         self.assertTrue(len(sample['train']) <= 85)
         self.assertTrue(len(sample['test']) <= 15)
 
