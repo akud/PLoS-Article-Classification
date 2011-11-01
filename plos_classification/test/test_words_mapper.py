@@ -4,8 +4,8 @@ from unittest import TestCase, main
 class TestMapper(TestCase):
     def setUp(self):
         categories = [
-            'red',
-            'yellow',
+            'red\n',
+            'YelLOw',
             'green',
             'blue'
         ]
@@ -13,7 +13,7 @@ class TestMapper(TestCase):
 
     def test_sorted(self):
         self.assertEquals(self.mapper.sortedSubjs,
-            ['Blue','Green','Red','Yellow']
+            ['blue','green','red','yellow']
         )
     def test_vector(self):
         #categories are reordered as ['blue','green','red','yellow']
@@ -38,19 +38,19 @@ class TestMapper(TestCase):
          #categories are reordered as ['blue','green','red','yellow']
         self.assertEquals(
             self.mapper.category([0,0,1,0]),
-            'Red',
+            'red',
         )
         self.assertEquals(
             self.mapper.category([0,0,0,1]),
-            'Yellow'
+            'yellow'
         )
         self.assertEquals(
             self.mapper.category([0,1,0,0]),
-            'Green'
+            'green'
         )
         self.assertEquals(
             self.mapper.category([1,0,0,0]),
-            'Blue'
+            'blue'
         )
 
 if __name__ == '__main__':

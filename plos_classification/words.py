@@ -10,7 +10,6 @@ def clean(word):
     word = ''.join(filter(lambda x: x in string.printable and x not in string.punctuation, word.lower())) 
     return __re__.sub('',word)
 
-
 def stem(word):
     return __stemmer__.stemWord(clean(word))
 
@@ -115,9 +114,10 @@ class mapper:
         '''
 
         if isinstance(trainingSubjects[0],list):
-            trainingSubjects = [ ', '.join(f[0:2]).title() for f in trainingSubjects ]
+            trainingSubjects = [ ' '.join(f[0:2]) for f in trainingSubjects ]
+
         subjCounts = {f : trainingSubjects.count(f) for f in set(trainingSubjects)}
-        self.sortedSubjs = sorted([sub.title() for sub in subjCounts.keys() if subjCounts[sub] >= mindocs])
+        self.sortedSubjs = sorted([clean(sub) for sub in subjCounts.keys() if subjCounts[sub] >= mindocs])
         self.count = len(self.sortedSubjs)
         print 'created mapping of %s subjects, excluded %s subjects' % (self.count,len([f for f in subjCounts.keys() if subjCounts[f] < mindocs]))
         if subjectFile:
@@ -131,9 +131,9 @@ class mapper:
         Create an indicator vector of 0s and 1s from the given subject
         '''
         if isinstance(subject,list):
-            subject = ', '.join(subject[0:2]).title()
+            subject = clean(' '.join(subject[0:2]))
         else:
-            subject = subject.title()
+            subject = clean(subject)
         vector = [0 for i in range(0,self.count)]
         try:
             index = self.sortedSubjs.index(subject) 
