@@ -1,4 +1,4 @@
-import solr, string, csv, re
+import string, csv, re
 from Stemmer import Stemmer
 from math import log
 from settings import stop_words

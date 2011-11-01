@@ -1,6 +1,5 @@
 import json
 from urllib2 import urlopen, quote
-from datetime import datetime, timedelta
 from settings import api_key
 
 searchUrl = 'http://api.plos.org/search?'

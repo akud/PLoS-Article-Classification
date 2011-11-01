@@ -1,6 +1,5 @@
-import solr, words
+import solr
 from urllib2 import quote
-import csv
 
 __defaultInc__ = 500
 
