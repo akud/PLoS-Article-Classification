@@ -1,14 +1,14 @@
 import plos_classification.solr as solr
-import unittest
+from unittest import TestCase, main
 
-class TestSingleField(unittest.TestCase):
+class TestSingleField(TestCase):
     def runTest(self):
         res = solr.singlefield('title',5)
         self.assertEqual(len(res),5)
         for title in res:
             self.assertIsInstance(title, unicode)
 
-class TestByIds(unittest.TestCase):
+class TestByIds(TestCase):
     def setUp(self):
        self.ids = ['10.1371/journal.pcbi.0010001', '10.1371/journal.pcbi.0010002']
 
@@ -21,7 +21,7 @@ class TestByIds(unittest.TestCase):
             self.assertIn('abstract',doc.keys())
             self.assertIn(doc['id'],self.ids)
 
-class TestGetIds(unittest.TestCase):
+class TestGetIds(TestCase):
     def runTest(self):
        res = solr.ids(10,5) 
        self.assertIsNotNone(res)
@@ -30,7 +30,7 @@ class TestGetIds(unittest.TestCase):
            self.assertIsInstance(doi,unicode)
            self.assertTrue(doi.startswith('10.1371/'))
 
-class TestBasicSearch(unittest.TestCase):
+class TestBasicSearch(TestCase):
     def runTest(self):
         res = solr.search()
         self.assertEqual(len(res),10)
@@ -38,7 +38,7 @@ class TestBasicSearch(unittest.TestCase):
             self.assertIn('id',doc.keys())
             self.assertIn('title',doc.keys())
 
-class TestSearchWithString(unittest.TestCase):
+class TestSearchWithString(TestCase):
     def runTest(self):
         res = solr.search('*:*')
         self.assertEqual(len(res),10)
@@ -46,7 +46,7 @@ class TestSearchWithString(unittest.TestCase):
         res = solr.search('id:10.1371/journal.pcbi.0010001')
         self.assertEqual(len(res),1)
 
-class TestSearchWithDict(unittest.TestCase):
+class TestSearchWithDict(TestCase):
     def setUp(self):
         self.fields = ['id','title','cross_published_journal_key']
 
@@ -64,4 +64,4 @@ class TestSearchWithDict(unittest.TestCase):
                 self.assertIn(field,doc.keys())
 
 if __name__ == '__main__':
-    unittest.main()
+    main()

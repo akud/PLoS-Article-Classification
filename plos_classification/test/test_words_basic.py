@@ -40,4 +40,4 @@ class TestAccept(TestCase):
             self.assertEqual(words.accept(word),self.words[word])
  
 if __name__ == '__main__':
-    unittest.main()
+    main()
