@@ -53,7 +53,7 @@ for doc in s['test']:
     x = []
     for textfield in text_fields:
         x += wordcounters[textfield].tfidf_vector(doc[textfield])
-    train.writerow(x)
-    ytrain.writerow(mapper.vector(subject))
+    test.writerow(x)
+    ytest.writerow(mapper.vector(subject))
 
 print datetime.now(), 'finished'
