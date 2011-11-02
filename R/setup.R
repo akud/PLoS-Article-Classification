@@ -8,7 +8,7 @@ source('knn.R')
 source('lda.R')
 
 common.log('loading training data...')
-trainingData <- as.matrix(read.csv('../data/train.csv',header=FALSE))
+trainingData <- as.matrix(read.csv('../data/xtrain.csv',header=FALSE))
 yTrain <- as.matrix(read.csv('../data/ytrain.csv',header=FALSE))
 
 common.log('removing 0-vectors...')
