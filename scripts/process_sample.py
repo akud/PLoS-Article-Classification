@@ -3,51 +3,54 @@ import csv, json, plos_classification.words as words
 from datetime import datetime
 
 s = json.load(open('data/sample.json')) 
-subject_field = 'cross_published_journal_key'
-filter_journals = ['PLoSClinicalTrials','PLoSCollections']
 text_fields = ['title','abstract']
 
-#write the ids just in case we want them
-train_ids = open('data/train_ids.txt','w')
-train_ids.writelines([f['id'] + '\n' for f in s['train']])
-train_ids.flush()
-train_ids.close()
-
-test_ids = open('data/test_ids.txt','w')
-test_ids.writelines([f['id'] + '\n' for f in s['test']])
-test_ids.flush()
-test_ids.close()
-
-#csv writers 
-train = csv.writer(open('data/train.csv','w'))
-test = csv.writer(open('data/test.csv','w')) 
+#set up csv writers 
+train = csv.writer(open('data/xtrain.csv','w'))
+test = csv.writer(open('data/xtest.csv','w')) 
 ytrain = csv.writer(open('data/ytrain.csv','w')) 
 ytest = csv.writer(open('data/ytest.csv','w')) 
 
-#set up the word counters
 mindocs = round(0.01*len(s['train']))
 maxdocs = round(0.99*len(s['train']))
 
+#create the subject mapping
 print datetime.now(), 'creating subject mapping'
-mapper = words.mapper([filter( lambda x: x not in filter_journals, f[subject_field]) for f in s['train']],
-    subjectFile='data/subjects.txt')
+#get the subjects
+subjects = [f['subject2_hierarchy'] for f in s['train']]
+#take the top-level element of each subject for each doc
+subjects = [[sub.split('/')[0] for sub in f] for f in subjects]
+#sort and join them together
+subjects = [ ','.join(set(sorted(sub))) for sub in subjects]
 
+mapper = words.mapper(subjects, subjectFile='data/subjects.txt')
+
+#setup word counters
 wordcounters = {} 
 for textfield in text_fields:
     print datetime.now(), 'creating dictionary for %s' % (textfield)
-    wordcounters[textfield] = words.counter([f[textfield] for f in s['train']],
-        mindocs=mindocs,maxdocs=maxdocs,dictionaryFile='data/dictionary-%s.txt' %(textfield))
+
+    wordcounters[textfield] = words.counter(
+        [f[textfield] for f in s['train']],
+        mindocs=mindocs, maxdocs=maxdocs,
+        dictionaryFile='data/dictionary-%s.txt' % (textfield))
 
 #process the sample and write vectors
 print datetime.now(), 'converting texts to vectors and storing to csv'
-for f in s['train']:
-    train.writerow(reduce(lambda x,y: x+y,
-        [ wordcounters[textfield].tfidf_vector(f[textfield]) for textfield in text_fields]))
-    ytrain.writerow(mapper.vector(filter(lambda x : x not in filter_journals, f[subject_field])))
+for doc in s['train']:
+    subject = set(sorted(doc['subject2_hierarchy'].split('/')[0]))
+    x = []
+    for textfield in text_fields:
+        x += wordcounters[textfield].tfidf_vector(doc[textfield])
+    train.writerow(x)
+    ytrain.writerow(mapper.vector(subject))
 
-for f in s['test']:
-    test.writerow(reduce(lambda x,y: x+y,
-        [ wordcounters[textfield].tfidf_vector(f[textfield]) for textfield in text_fields]))
-    ytest.writerow(mapper.vector(filter(lambda x : x not in filter_journals, f[subject_field])))
+for doc in s['test']:
+    subject = set(sorted(doc['subject2_hierarchy'].split('/')[0]))
+    x = []
+    for textfield in text_fields:
+        x += wordcounters[textfield].tfidf_vector(doc[textfield])
+    train.writerow(x)
+    ytrain.writerow(mapper.vector(subject))
 
 print datetime.now(), 'finished'
