@@ -1,4 +1,7 @@
 #!/usr/bin/python
+'''
+Script to load json file (data/sample.json) and process it, creating csv files of tf-idf vectors for the articles
+'''
 import csv, json, plos_classification.words as words
 from datetime import datetime
 

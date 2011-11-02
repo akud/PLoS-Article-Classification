@@ -1,4 +1,7 @@
 #!/usr/bin/python
+''' 
+Script to gather sample articles from solr and write them to json
+'''
 import plos_classification.setup as setup, json
 from datetime import datetime
 
