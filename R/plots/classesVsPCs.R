@@ -21,7 +21,7 @@ for (i in 1:(numPCs - 1)) {
             type='p',xlab=paste('PC',i),ylab=paste('PC',j),
             pch='.',main=title,xlim=xlim,ylim=ylim )
 
-        for( f in 1:numClasses ) {
+        for( f in 2:numClasses ) {
             classPoints <- common.classPoints(converter$orig,yTrain,f)
             points(classPoints[,i],classPoints[,j],
                 col=graphColors[f],pch='.')
