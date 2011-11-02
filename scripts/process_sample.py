@@ -21,7 +21,7 @@ subjects = [f['subject2_hierarchy'] for f in s['train']]
 #take the top-level element of each subject for each doc
 subjects = [[sub.split('/')[0] for sub in f] for f in subjects]
 #sort and join them together
-subjects = [ ','.join(set(sorted(sub))) for sub in subjects]
+subjects = [ ''.join(set(sorted(sub))) for sub in subjects]
 
 mapper = words.mapper(subjects, subjectFile='data/subjects.txt')
 
@@ -38,7 +38,7 @@ for textfield in text_fields:
 #process the sample and write vectors
 print datetime.now(), 'converting texts to vectors and storing to csv'
 for doc in s['train']:
-    subject = set(sorted(doc['subject2_hierarchy'].split('/')[0]))
+    subject = ''.join(set(sorted([sub.split('/')[0] for sub in doc['subject2_hierarchy']])))
     x = []
     for textfield in text_fields:
         x += wordcounters[textfield].tfidf_vector(doc[textfield])
@@ -46,7 +46,7 @@ for doc in s['train']:
     ytrain.writerow(mapper.vector(subject))
 
 for doc in s['test']:
-    subject = set(sorted(doc['subject2_hierarchy'].split('/')[0]))
+    subject = ''.join(set(sorted([sub.split('/')[0] for sub in doc['subject2_hierarchy']])))
     x = []
     for textfield in text_fields:
         x += wordcounters[textfield].tfidf_vector(doc[textfield])
