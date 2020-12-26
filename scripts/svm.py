@@ -5,7 +5,7 @@ from datetime import datetime
 from sklearn.externals import joblib
 
 print datetime.now(), 'loading csv files'
-train_reader = csv.reader(open('data/train.csv'))
+train_reader = csv.reader(open('data/xtrain.csv'))
 ytrain_reader = csv.reader(open('data/ytrain.csv'))
 X = []
 y = []
